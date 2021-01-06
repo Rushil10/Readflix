@@ -26,6 +26,29 @@ export const loginUser =  (userData,callback) => (dispatch) => {
         console.log(err)
     })
 }
+
+export const signupUser = (userData,callback) => (dispatch) => {
+    dispatch({type:LOADING_UI});
+    axios.post(`${api}/signup`,userData)
+    .then(res => {
+        console.log(res.data)
+        if(res.data.Token){
+            setAuthorizationHeader(res.data.Token);
+            dispatch({type:SET_AUTHENTICATED,username:userData.username,token:res.data.Token})
+            dispatch({type:CLEAR_ERRORS})
+            callback();
+        } else {
+            dispatch({
+                type:SET_ERRORS,
+                payload:'Username Not Available'
+            })
+            dispatch({type:SET_UNAUTHENTICATED})
+        }
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
  
 const setAuthorizationHeader = async(token) => {
     await AsyncStorage.setItem('userToken',`Bearer ${token}`)
