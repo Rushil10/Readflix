@@ -7,11 +7,13 @@ import { Input,Icon,Button,Spinner,Text} from '@ui-kitten/components';
 import { TouchableWithoutFeedback } from 'react-native';
 import store from '../redux/store';
 import { CLEAR_ERRORS } from '../redux/types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LoginScreen(props) {
     const [username,setUsername] = React.useState('')
     const [password,setPassword] = React.useState('')
     const [errors,setErrors] = React.useState('')
+    const [token,setToken] = React.useState(null)
     const scheme = useColorScheme();
     let stat = 'control';
     {scheme === 'dark' ? stat='control' : stat='danger'}
@@ -35,11 +37,10 @@ function LoginScreen(props) {
             username,
             password
         }
-        props.loginUser(userData,()=>props.navigation.replace('Home'))
+        props.loginUser(userData,()=>props.navigation.replace('Main',{screen:'Series'}))
     }
 
     useEffect(() => {
-        console.log(scheme)
         if(props.UI.errors){
             setErrors(props.UI.errors)
         }

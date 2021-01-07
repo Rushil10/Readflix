@@ -38,7 +38,7 @@ function UsernameScreen(props) {
                 contact:phoneNumber,
                 username
             }
-            props.signupUser(userData,() => props.navigation.replace('Home'))
+            props.signupUser(userData,() => props.navigation.replace('Main',{screen:'Series'}))
         }
     }
 
@@ -53,7 +53,7 @@ function UsernameScreen(props) {
         callback()
       }
 
-    console.log(props)
+    //console.log(props)
 
     return (
         <View style={{flex:1,marginTop:30,justifyContent:'center'}}>

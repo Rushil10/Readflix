@@ -1,0 +1,1 @@
+export const imgloc = 'C:/Users/rushi/OneDrive/Desktop/rf_backend/rf/public/images/profile_photo'
