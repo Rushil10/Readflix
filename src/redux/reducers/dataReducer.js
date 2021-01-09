@@ -1,9 +1,10 @@
-import { LOADING_DATA, SET_POSTS } from "../types";
+import { LOADING_DATA, SET_BOOK_POSTS, SET_POSTS, SET_SERIES_POSTS } from "../types";
 
 const initialState = {
-    posts:[],
+    series:[],
+    books:[],
     post:{},
-    loading:false
+    loading:false,
 }
 
 export default function(state=initialState,action) {
@@ -13,11 +14,17 @@ export default function(state=initialState,action) {
                 ...state,
                 loading:true,
             }
-        case SET_POSTS:
+        case SET_SERIES_POSTS:
             return {
                 ...state,
-                posts:action.posts,
-                loading:false
+                series:action.series,
+                loading:false,
+            }
+        case SET_BOOK_POSTS:
+            return {
+                ...state,
+                books:action.books,
+                loading:false,
             }
         default:
             return state;

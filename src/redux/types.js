@@ -14,3 +14,6 @@ export const LOADING_DATA = 'LOADING_DATA'
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT'
 export const POST = 'POST'
 export const DELETE_POST = 'DELETE_POST'
+
+export const SET_SERIES_POSTS = 'SET_SERIES_POSTS'
+export const SET_BOOK_POSTS = 'SET_BOOK_POSTS'

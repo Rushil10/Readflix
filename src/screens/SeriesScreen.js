@@ -1,35 +1,44 @@
 import * as React from 'react';
-import { View, Text ,Button,ScrollView} from 'react-native';
+import { View, Text ,Button,ScrollView,RefreshControl,Dimensions} from 'react-native';
 import {logoutUser} from '../redux/actions/userActions'
-import {getPosts} from '../redux/actions/dataActions'
+import {getSeriesPosts} from '../redux/actions/dataActions'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import PostCard from '../components/PostCard';
+import { Spinner } from '@ui-kitten/components';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native'
 
 function HomeScreen(props) {
 
-  const getAllPosts = () => {
-    props.getPosts()
-  }
+  const height = Dimensions.get('window').height;
 
-  //const [series,setSeries] = React.useState([])
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  React.useState(() => {
-    //console.log(props)
-    getAllPosts()
-  })
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    props.getSeriesPosts()
+    setRefreshing(false)
+  },[refreshing])
 
-  const {posts,loading} = props.data
-  //console.log(posts)
+  React.useEffect(() => {
+    props.getSeriesPosts()
+  },[])
+
+  const {series,loading} = props.data
 
   let postsMarkup = !loading ? (
-    posts.map(post => <PostCard post={post} key={post.post_id}/>)
+    series.map(post => <PostCard post={post} key={post.post_id}/>)
   ) : (
-    <Text>Loading</Text>
+    <View style={{flex:1, justifyContent:'center' , alignItems:'center',marginTop:height/2 -45 }}>
+    <Spinner size='giant' status='info' />
+    </View>
   )
 
     return (
-      <ScrollView>
+      <ScrollView style={{flex:1}}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
         {postsMarkup}
       </ScrollView>
     );
@@ -37,7 +46,7 @@ function HomeScreen(props) {
 
 HomeScreen.propTypes = { 
     data:PropTypes.object.isRequired,
-    getPosts:PropTypes.func.isRequired
+    getSeriesPosts:PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -45,7 +54,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    getPosts
+    getSeriesPosts
 }
 
 export default connect(mapStateToProps,mapActionsToProps)(HomeScreen);

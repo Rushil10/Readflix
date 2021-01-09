@@ -46,7 +46,7 @@ function SignUpScreen(props) {
     } else if(phoneNumber.length > 10 || /\s/.test(phoneNumber)) {
       Alert.alert('Invalid Input','Number should contain only 10 digits and It should not have space',[{text:'Okay'}]);
       return;
-    } else if( /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+    } else if( !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
       Alert.alert('Invalid Input','Email must be valid email address',[{text:'Okay'}]);
       return;
     } else {

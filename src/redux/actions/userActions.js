@@ -37,7 +37,7 @@ export const loginUser =  (userData,callback) => (dispatch) => {
 
 export const getUserData = (username) => (dispatch) => {
     dispatch({type:LOADING_USER})
-    console.log(axios.defaults.headers)
+    //console.log(axios.defaults.headers)
     axios.get(`${api}/user/${username}`)
     .then(res => {
         dispatch({type:SET_USER,user:res.data.user})

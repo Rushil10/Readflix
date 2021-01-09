@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,7 +14,7 @@ import UsernameScreen from './src/screens/UsernameScreen'
 import SeriesScreen from './src/screens/SeriesScreen'
 import AsyncStorage from '@react-native-community/async-storage';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider,IconRegistry} from '@ui-kitten/components';
+import { ApplicationProvider,Avatar,Icon,IconRegistry} from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import {DefaultTheme,DarkTheme} from '@react-navigation/native'
@@ -30,6 +30,24 @@ const Stack = createStackNavigator();
 const SignUpStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
+
+let fi ='#1DA1F2'
+
+const MonitorIcon = () => (
+    <Icon style={{height:25,width:25}} name='monitor-outline' fill={fi} />
+)
+
+const BookIcon = () => (
+  <Icon style={{height:25,width:25}} name='book-open-outline' fill={fi} />
+)
+
+const CreateIcon = () => (
+  <Icon style={{height:25,width:25}} name='plus-square-outline' fill={fi} />
+)
+
+const SearchIcon = () => (
+  <Icon style={{height:25,width:25}} name='search' fill={fi} />
+)
 
 function getHeaderTitle(route) {
   // If the focused route is not found, we need to assume it's the initial screen
@@ -54,11 +72,11 @@ function getHeaderTitle(route) {
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen options={{title:'Series'}} name="Series" component={SeriesScreen} />
-      <Tab.Screen name="Books" component={BooksScreen} />
-      <Tab.Screen name="CreatePost" component={CreatePostScreen} />
-      <Tab.Screen name="SearchUser" component={SearchUserScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen options={{tabBarLabel:'Shows',tabBarIcon: () => (<MonitorIcon />)}} name="Series" component={SeriesScreen} />
+      <Tab.Screen options={{tabBarLabel:'Books',tabBarIcon: () => (<BookIcon />)}} name="Books" component={BooksScreen} />
+      <Tab.Screen options={{tabBarLabel:'Create',tabBarIcon: () => (<CreateIcon />)}}name="CreatePost" component={CreatePostScreen} />
+      <Tab.Screen options={{tabBarLabel:'Search',tabBarIcon: () => (<SearchIcon />)}} name="SearchUser" component={SearchUserScreen} />
+      <Tab.Screen options={{tabBarLabel:'Profile',tabBarIcon: () => (<Avatar style={{height:25,width:25}} source={require('./src/profile_photo/y.jpg')} />)}} name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   )
 }
@@ -78,9 +96,10 @@ function App() {
 
   return (
     <>
-    <IconRegistry icons={EvaIconsPack} />
     {
       scheme === 'dark' ? (
+        <>
+        <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.dark}>
     <AppearanceProvider>
     <Provider store={store}>
@@ -97,7 +116,10 @@ function App() {
     </Provider>
     </AppearanceProvider>
     </ApplicationProvider>
+    </>
       ) : (
+        <>
+        <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={eva.light}>
     <AppearanceProvider>
     <Provider store={store}>
@@ -108,12 +130,16 @@ function App() {
         <Stack.Screen options={{headerShown: false}} name="SignUp" component={SignUp} />
         <Stack.Screen options={({ route }) => ({
             headerTitle: getHeaderTitle(route),
+            headerTitleStyle:{
+              color:fi
+            }
             })} name="Main" component={MyTabs} />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
     </AppearanceProvider>
     </ApplicationProvider>
+    </>
       )
     }
     </>

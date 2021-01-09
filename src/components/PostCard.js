@@ -1,27 +1,38 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Card, Layout, Text,Avatar } from '@ui-kitten/components';
+import { StyleSheet, View,Image } from 'react-native';
+import { Button, Card, Layout, Text,Avatar, Icon, Input } from '@ui-kitten/components';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {imgloc} from '../imgloc'
 import { useColorScheme } from 'react-native-appearance';
+import moment from 'moment'
 
-let usernam = null;
-let imgname = null;
+let fi ='#1DA1F2'
 
-const userImage = () => (
-    <Avatar source={require('../profile_photo/no-image.jpg')} />
+const CommentIcon = () => (
+    <Icon style={styles.icon} name='message-square-outline' fill={fi} />
 )
 
-const Header = (props) => (
-    <View {...props} style={styles.head}>
-        <Avatar style={styles.photo} source={require('../profile_photo/no-image.jpg')} />
-        <Text style={styles.user}>{usernam}</Text>
+const Header = ({username}) => (
+    <View style={styles.head}>
+        <Avatar style={styles.photo} source={require('../profile_photo/new.jpg')} />
+        <Text style={styles.user}>{username}</Text>
+    </View>
+)
+
+const Footer = ({commentcount,postedAt}) => (
+    <View style={styles.head}>
+        <CommentIcon />
+        <Text style={styles.comcon}>{commentcount} comments</Text>
+        <Text style={styles.postDate}>{moment(postedAt).fromNow()}</Text>
     </View>
 )
 
 let theme='light';
-let bgcolor='white'
+let bgcolor='white';
+let post_date = null;
+let cc = null;
+//let color = 'azure'
 
 function PostCard(props) {
     let stat = 'danger';
@@ -29,33 +40,37 @@ function PostCard(props) {
     theme=scheme;
     {scheme === 'dark' ? stat='basic' : stat='info'}
     {scheme === 'dark' ? bgcolor='#0F0F0F' : bgcolor='white'}
+    //{scheme === 'dark' ? color='azure' : color='black'}
     const {post:{name,image_name,commentcount,post_id,postedAt,review,start_date,username}} = props;
-    usernam=username;
-    imgname=image_name;
+    cc=commentcount;
+    const date = moment(start_date).format("DD MMMM YYYY")
     return (
-        <Card style={{backgroundColor:bgcolor,borderRadius:15,margin:5}} status={stat} header={Header}>
+        <Card style={{backgroundColor:bgcolor,borderRadius:15,marginTop:9,marginLeft:5,marginRight:5}} status={stat} header={(props) => <Header {...props} username={username} /> } footer={(props) => <Footer {...props} commentcount={commentcount} postedAt={postedAt} />}>
             <Text style={styles.name}>Name : {name}</Text>
             <Text style={styles.review}>Review : {review} </Text>
+            <Text style={styles.name}>StartDate : {date}</Text>
         </Card>
     )
 }
 
 const styles = StyleSheet.create({
-    card:{
-        
-    },
     head:{
         flexDirection:'row',
         margin:9
     },
     photo:{
-        marginLeft:5
+        marginLeft:11,
+        height:35,
+        width:35,
+        marginBottom:0
     },
     user:{
-        margin:9
+        marginBottom:0,
+        marginTop:5,
+        marginLeft:5,
     },
     name:{
-        margin:7,
+        margin:5,
         marginLeft:0,
         fontSize:15
     },
@@ -63,7 +78,23 @@ const styles = StyleSheet.create({
         margin:7,
         marginLeft:0,
         fontSize:15
-    }
+    },
+    postDate:{
+        fontSize:13,
+        marginLeft:'auto',
+        marginTop:3,
+    },
+    comcon:{
+        marginLeft:9,
+        fontSize:13,
+        marginTop:3
+    },
+    icon:{
+        height:27,
+        width:27,
+        marginLeft:5,
+        marginTop:1
+    },
 })
 
 export default PostCard;
