@@ -22,14 +22,18 @@ import LoadingScreen from './src/screens/LoadingScreen';
 import BooksScreen from './src/screens/BooksScreen';
 import CreatePostScreen from './src/screens/CreatePostScreen';
 import SearchUserScreen from './src/screens/SearchUserScreen';
+import PostScreen from './src/screens/PostScreen'
 import ProfileScreen from './src/screens/ProfileScreen';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {onTabPress} from './src/service'
 
 const Stack = createStackNavigator();
 
 const SignUpStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
+
+const SeriesStack = createStackNavigator();
 
 let fi ='#1DA1F2'
 
@@ -71,9 +75,12 @@ function getHeaderTitle(route) {
 
 function MyTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen options={{tabBarLabel:'Shows',tabBarIcon: () => (<MonitorIcon />)}} name="Series" component={SeriesScreen} />
-      <Tab.Screen options={{tabBarLabel:'Books',tabBarIcon: () => (<BookIcon />)}} name="Books" component={BooksScreen} />
+    <Tab.Navigator tabBarOptions={{keyboardHidesTabBar:true}}>
+      <Tab.Screen options={{tabBarLabel:'Shows',tabBarIcon: () => (<MonitorIcon />)}} name="Series" component={SeriesScreen}
+      listeners={({ navigation, route }) => ({tabPress: () => onTabPress(navigation, route)})} />
+      <Tab.Screen options={{tabBarLabel:'Books',tabBarIcon: () => (<BookIcon />)}} name="Books" component={BooksScreen} 
+        listeners={({ navigation, route }) => ({tabPress: () => onTabPress(navigation, route)})}
+      />
       <Tab.Screen options={{tabBarLabel:'Create',tabBarIcon: () => (<CreateIcon />)}}name="CreatePost" component={CreatePostScreen} />
       <Tab.Screen options={{tabBarLabel:'Search',tabBarIcon: () => (<SearchIcon />)}} name="SearchUser" component={SearchUserScreen} />
       <Tab.Screen options={{tabBarLabel:'Profile',tabBarIcon: () => (<Avatar style={{height:25,width:25}} source={require('./src/profile_photo/y.jpg')} />)}} name="Profile" component={ProfileScreen} />
@@ -108,6 +115,7 @@ function App() {
         <Stack.Screen options={{headerShown: false}} name="Loading" component={LoadingScreen} />
         <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
         <Stack.Screen options={{headerShown: false}} name="SignUp" component={SignUp} />
+        <Stack.Screen name="Post" component={PostScreen} />
         <Stack.Screen options={({ route }) => ({
             headerTitle: getHeaderTitle(route),
             })} name="Main" component={MyTabs} />
@@ -128,6 +136,7 @@ function App() {
         <Stack.Screen options={{headerShown: false}} name="Loading" component={LoadingScreen} />
         <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
         <Stack.Screen options={{headerShown: false}} name="SignUp" component={SignUp} />
+        <Stack.Screen name="Post" component={PostScreen} />
         <Stack.Screen options={({ route }) => ({
             headerTitle: getHeaderTitle(route),
             headerTitleStyle:{

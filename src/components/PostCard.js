@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View,Image } from 'react-native';
+import { StyleSheet, View,Image, TouchableOpacity } from 'react-native';
 import { Button, Card, Layout, Text,Avatar, Icon, Input } from '@ui-kitten/components';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {imgloc} from '../imgloc'
 import { useColorScheme } from 'react-native-appearance';
 import moment from 'moment'
+import { useNavigation } from '@react-navigation/native';
 
 let fi ='#1DA1F2'
 
@@ -35,6 +36,7 @@ let cc = null;
 //let color = 'azure'
 
 function PostCard(props) {
+    const navigation = useNavigation();
     let stat = 'danger';
     const scheme = useColorScheme()
     theme=scheme;
@@ -45,11 +47,13 @@ function PostCard(props) {
     cc=commentcount;
     const date = moment(start_date).format("DD MMMM YYYY")
     return (
-        <Card style={{backgroundColor:bgcolor,borderRadius:15,marginTop:9,marginLeft:5,marginRight:5}} status={stat} header={(props) => <Header {...props} username={username} /> } footer={(props) => <Footer {...props} commentcount={commentcount} postedAt={postedAt} />}>
-            <Text style={styles.name}>Name : {name}</Text>
+            <Card style={{backgroundColor:bgcolor,borderRadius:15,marginTop:9,marginLeft:5,marginRight:5}} status={stat} header={(props) => <Header {...props} username={username} /> } footer={(props) => <Footer {...props} commentcount={commentcount} postedAt={postedAt} />}>
+            <TouchableOpacity onPress={() => props.navigation.push('Post',{postId:post_id})}>
+            <Text style={styles.name}>{name}</Text>
             <Text style={styles.review}>Review : {review} </Text>
-            <Text style={styles.name}>StartDate : {date}</Text>
-        </Card>
+            <Text style={styles.name}>{date}</Text>
+            </TouchableOpacity>
+            </Card>
     )
 }
 

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import {api} from '../../api'
 import { CLEAR_ERRORS, SET_AUTHENTICATED, SET_ERRORS, SET_UNAUTHENTICATED,LOADING_UI, LOADING_USER, SET_USER } from '../types';
+import {getSeriesPosts} from './dataActions'
 
 let token = null;
 let username = null;
@@ -19,6 +20,7 @@ export const loginUser =  (userData,callback) => (dispatch) => {
             password = userData.password,
             setAuthorizationHeader(res.data.Token);
             dispatch(getUserData(userData.username))
+            //dispatch(getSeriesPosts)
             //dispatch({type:SET_AUTHENTICATED,username:userData.username,token:res.data.Token})
             dispatch({type:CLEAR_ERRORS})
             callback();

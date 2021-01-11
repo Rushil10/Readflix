@@ -28,7 +28,7 @@ function LoadingScreen(props) {
 
     const getToken = async() => {
         let toke;
-        console.log('getting Token')
+        //console.log('getting Token')
         toke = await AsyncStorage.getItem('userToken')
         setToken(toke)
     }
@@ -38,9 +38,9 @@ function LoadingScreen(props) {
     }
 
     useEffect(() => {
-        console.log(props)
+        //console.log(props)
         getToken();
-        console.log(token)
+        //console.log(token)
         if(token!=null){
             getDetails();
         } else {

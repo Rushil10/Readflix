@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import PostCard from '../components/PostCard';
 import { Spinner } from '@ui-kitten/components';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native'
+import {useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native'
+import {scrollToTop} from '../service'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function HomeScreen(props) {
 
@@ -20,14 +22,22 @@ function HomeScreen(props) {
     setRefreshing(false)
   },[refreshing])
 
+  const navigation = useNavigation()
+
+  const listRef = React.useRef(null)
+
   React.useEffect(() => {
+    //console.log(props.data.loading)
     props.getSeriesPosts()
+    if (listRef?.current) {
+    scrollToTop(navigation, listRef);
+    }
   },[])
 
   const {series,loading} = props.data
 
   let postsMarkup = !loading ? (
-    series.map(post => <PostCard post={post} key={post.post_id}/>)
+    series.map(post => <PostCard post={post} key={post.post_id} navigation={props.navigation}/> )
   ) : (
     <View style={{flex:1, justifyContent:'center' , alignItems:'center',marginTop:height/2 -45 }}>
     <Spinner size='giant' status='info' />
@@ -38,7 +48,8 @@ function HomeScreen(props) {
       <ScrollView style={{flex:1}}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      }
+      ref={listRef}>
         {postsMarkup}
       </ScrollView>
     );
