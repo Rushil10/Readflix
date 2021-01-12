@@ -7,6 +7,7 @@ import {imgloc} from '../imgloc'
 import { useColorScheme } from 'react-native-appearance';
 import moment from 'moment'
 import { useNavigation } from '@react-navigation/native';
+import {getPost} from '../redux/actions/dataActions'
 
 let fi ='#1DA1F2'
 
@@ -36,6 +37,7 @@ let cc = null;
 //let color = 'azure'
 
 function PostCard(props) {
+    //console.log(props)
     const navigation = useNavigation();
     let stat = 'danger';
     const scheme = useColorScheme()
@@ -44,8 +46,17 @@ function PostCard(props) {
     {scheme === 'dark' ? bgcolor='#0F0F0F' : bgcolor='white'}
     //{scheme === 'dark' ? color='azure' : color='black'}
     const {post:{name,image_name,commentcount,post_id,postedAt,review,start_date,username}} = props;
+    const {loading} = props.data
     cc=commentcount;
     const date = moment(start_date).format("DD MMMM YYYY")
+
+    const postDetailsHandle = async(id,callback) => {
+        await props.getPost(id)
+        if(!loading){
+            callback()
+        }
+    }
+
     return (
             <Card style={{backgroundColor:bgcolor,borderRadius:15,marginTop:9,marginLeft:5,marginRight:5}} status={stat} header={(props) => <Header {...props} username={username} /> } footer={(props) => <Footer {...props} commentcount={commentcount} postedAt={postedAt} />}>
             <TouchableOpacity onPress={() => props.navigation.push('Post',{postId:post_id})}>
@@ -101,4 +112,21 @@ const styles = StyleSheet.create({
     },
 })
 
-export default PostCard;
+PostCard.propTypes = { 
+    getPost:PropTypes.func.isRequired,
+    //UI:PropTypes.object.isRequired,
+    //user:PropTypes.object.isRequired,
+    data:PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    //user:state.user,
+    //UI:state.UI,
+    data:state.data
+})
+
+const mapActionsToProps = {
+    getPost
+}
+
+export default connect(mapStateToProps,mapActionsToProps)(PostCard);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text ,Button,ScrollView,RefreshControl,Dimensions} from 'react-native';
+import { View, Text ,Button,ScrollView,RefreshControl,Dimensions,FlatList,SafeAreaView} from 'react-native';
 import {getBookPosts} from '../redux/actions/dataActions'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
@@ -42,13 +42,15 @@ function BooksScreen(props) {
       )
     
         return (
-          <ScrollView
-          refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ref={listRef}>
-            {postsMarkup}
-          </ScrollView>
+          <SafeAreaView style={{flex:1}}>
+        <ScrollView ref={listRef} style={{flex:1}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
+        <FlatList
+        keyExtractor={item => item.post_id.toString()}
+        data={Object.assign(books)}
+        renderItem={data => <PostCard post={data.item} navigation={props.navigation} />}
+        />
+      </ScrollView>
+      </SafeAreaView>
         );
 }
 

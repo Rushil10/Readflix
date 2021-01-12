@@ -3,7 +3,7 @@ import { LOADING_DATA, POST, SET_BOOK_POSTS, SET_POSTS, SET_SERIES_POSTS } from 
 const initialState = {
     series:[],
     books:[],
-    post:{},
+    postInfo:{},
     loading:false,
 }
 
@@ -33,7 +33,7 @@ export default function(state=initialState,action) {
         case SET_POSTS:
             return {
                 ...state,
-                post:action.postInfo,
+                postInfo:action.postInfo,
                 loading:false,
             }
         default:

@@ -3,7 +3,7 @@ import { CLEAR_ERRORS, LOADING_DATA, SET_BOOK_POSTS, SET_POSTS, SET_SERIES_POSTS
 import {api} from '../../api'
 
 export const getSeriesPosts = () => dispatch => {
-    dispatch({type:LOADING_DATA})
+    //dispatch({type:LOADING_DATA})
     axios.get(`${api}/posts`)
     .then(res => {
         dispatch({type:SET_SERIES_POSTS,series:res.data.series})
@@ -15,7 +15,7 @@ export const getSeriesPosts = () => dispatch => {
 }
 
 export const getBookPosts = () => dispatch => {
-    dispatch({type:LOADING_DATA})
+    //dispatch({type:LOADING_DATA})
     axios.get(`${api}/posts`)
     .then(res => {
         dispatch({type:SET_BOOK_POSTS,books:res.data.books})
@@ -26,11 +26,11 @@ export const getBookPosts = () => dispatch => {
 }
 
 export const post = (post) => dispatch => {
-    dispatch({type:LOADING_UI})
+    //dispatch({type:LOADING_UI})
     console.log(post)
     axios.post(`${api}/post`,post)
     .then(res => {
-        console.log(res.data)
+        //console.log(res.data)
         dispatch({type:POST})
         dispatch({type:CLEAR_ERRORS})
     })
@@ -40,11 +40,11 @@ export const post = (post) => dispatch => {
 }
 
 export const getPost = (id) => dispatch => {
-    dispatch({type:LOADING_DATA})
+    //dispatch({type:LOADING_DATA})
     axios.get(`${api}/post/${id}`)
-    .then(res => {
-        console.log(res.data)
-        dispatch({type:SET_POST,postInfo:res.data})
+    .then(async(res) => {
+        //console.log(res.data)
+        await dispatch({type:SET_POSTS,postInfo:res.data})
     })
     .catch(err => {
         console.log(err)

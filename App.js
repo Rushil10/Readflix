@@ -73,6 +73,15 @@ function getHeaderTitle(route) {
   }
 }
 
+function SeriesStac() {
+  return (
+    <SeriesStack.Navigator>
+      <SeriesStack.Screen name="Serie" component={SeriesScreen} />
+      <SeriesStack.Screen name="SeriesPost" component={PostScreen} />
+    </SeriesStack.Navigator>
+  )
+}
+
 function MyTabs() {
   return (
     <Tab.Navigator tabBarOptions={{keyboardHidesTabBar:true}}>
